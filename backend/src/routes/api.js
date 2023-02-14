@@ -27,6 +27,7 @@ router.get("/listTaskGroup", AuthVerifyMiddleware,TasksController.listTaskGroup)
 router.get("/deleteTask/:id", AuthVerifyMiddleware,TasksController.deleteTask);
 router.post("/createTask",AuthVerifyMiddleware,TasksController.createTask);
 router.get("/taskStatusCount", AuthVerifyMiddleware,TasksController.taskStatusCount);
+router.get("/task-group-count", AuthVerifyMiddleware,TasksController.taskGroupCount);
 
 
 module.exports = router;

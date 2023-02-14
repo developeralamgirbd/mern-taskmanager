@@ -142,7 +142,7 @@ exports.listTaskByStatus=(req,res)=>{
     })
 }
 
-// Get Task by status
+// Get Task by group
 exports.listTaskByGroup=(req,res)=>{
     let status = req.params.status;
     let group= req.params.group;
@@ -176,6 +176,7 @@ exports.listTaskByGroup=(req,res)=>{
     })
 }
 
+// Get Task all group
 exports.listTaskGroup=(req,res)=>{
 
     let email = req.headers['email'];
@@ -203,6 +204,7 @@ exports.listTaskGroup=(req,res)=>{
     })
 }
 
+// Get Task by group and status
 exports.listTaskGroupByStatus=(req,res)=>{
     let status= req.params.status;
     let email = req.headers['email'];
@@ -231,12 +233,34 @@ exports.listTaskGroupByStatus=(req,res)=>{
     })
 }
 
-
+// Get Task status count
 exports.taskStatusCount=(req,res)=>{
     let email = req.headers['email'];
     Task.aggregate([
         {$match: { email: email }},
         {$group: { _id:"$status", sum:{ $count: {} } }}
+    ], (err, data)=>{
+        if(err){
+            res.status(400).json({
+                status:"fail",
+                error: err.message})
+        }
+        else{
+            res.status(200).json({
+                status:"success",
+                data:data
+            })
+        }
+    })
+}
+
+// Get Task group count
+exports.taskGroupCount=(req,res)=>{
+    let email = req.headers['email'];
+
+    Task.aggregate([
+        {$match: { email: email }},
+        {$group: { _id: '$groupName', sum:{ $count: {} } }}
     ], (err, data)=>{
         if(err){
             res.status(400).json({
