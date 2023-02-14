@@ -19,11 +19,14 @@ router.post("/RecoverResetPass",UsersController.RecoverResetPass);
 /**
  * Task Route
  */
-router.post("/createTask",AuthVerifyMiddleware,TasksController.createTask);
 router.get("/updateTaskStatus/:id/:status",AuthVerifyMiddleware,TasksController.updateTaskStatus);
 router.get("/listTaskByStatus/:status",AuthVerifyMiddleware,TasksController.listTaskByStatus);
-router.get("/taskStatusCount", AuthVerifyMiddleware,TasksController.taskStatusCount);
+router.get("/listTaskGroupByStatus/:status", AuthVerifyMiddleware,TasksController.listTaskGroupByStatus);
+router.get("/listTaskByGroup/:group/:status", AuthVerifyMiddleware,TasksController.listTaskByGroup);
+router.get("/listTaskGroup", AuthVerifyMiddleware,TasksController.listTaskGroup);
 router.get("/deleteTask/:id", AuthVerifyMiddleware,TasksController.deleteTask);
+router.post("/createTask",AuthVerifyMiddleware,TasksController.createTask);
+router.get("/taskStatusCount", AuthVerifyMiddleware,TasksController.taskStatusCount);
 
 
 module.exports = router;
