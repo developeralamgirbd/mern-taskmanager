@@ -5,8 +5,6 @@ exports.createTask= async (req,res)=>{
     let {groupName, exitGroup, title, description} = req.body;
     const email = req.headers['email'];
 
-    // console.log(groupName, exitGroup)
-
     if (groupName){
         const isTask = await Task.aggregate([
             {$match: {email, groupName}}
@@ -77,7 +75,6 @@ exports.deleteTask=(req,res)=>{
         }
     })
 }
-
 
 // Update Task status
 exports.updateTaskStatus= async (req,res)=>{
@@ -183,9 +180,6 @@ exports.listTaskGroup=(req,res)=>{
 
     Task.aggregate([
         {$match:{ email:email }},
-        /*{$project:{
-                _id:1, groupName: 1,
-            }},*/
         {$group: {_id: {groupName: '$groupName'}, }},
 
     ], (err, data)=>{
@@ -196,7 +190,6 @@ exports.listTaskGroup=(req,res)=>{
             })
         }
         else{
-            console.log(data)
             res.status(200).json({
                 status:"success",
                 data:data})
@@ -272,6 +265,41 @@ exports.taskGroupCount=(req,res)=>{
                 status:"success",
                 data:data
             })
+        }
+    })
+}
+
+// Get Task by status
+exports.searchTask = (req,res)=>{
+    let keyword = req.params.keyword;
+    let email=req.headers['email'];
+
+    let SearchRgx = {"$regex": keyword, "$options": "i"}
+    let SearchQuery = { $or: [ {title: SearchRgx}, {groupName: SearchRgx}] , email:email }
+
+    Task.aggregate([
+        {$match: SearchQuery },
+        {$project:{
+                _id:1,title:1,description:1, status:1,groupName: 1,
+                createdDate:{
+                    $dateToString:{
+                        date:"$createdDate",
+                        format:"%d-%m-%Y"
+                    }
+                }
+            }},
+        {$sort: {_id: -1}}
+    ], (err, data)=>{
+        if(err){
+            res.status(500).json({
+                status: "fail",
+                error: err.message
+            })
+        }
+        else{
+            res.status(200).json({
+                status:"success",
+                data:data})
         }
     })
 }

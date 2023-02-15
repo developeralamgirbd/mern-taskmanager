@@ -65,17 +65,6 @@ const Completed = () => {
                             </Form.Select>
                         </Form.Group>
                     </div>
-                    <div className='col-4'></div>
-
-                    <div className='col-4'>
-
-                        <InputGroup>
-                            <Form.Control
-                            />
-                            <InputGroup.Text className='bg-info text-white' >Search</InputGroup.Text>
-                        </InputGroup>
-
-                    </div>
 
                 </div>
 

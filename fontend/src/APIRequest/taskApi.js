@@ -10,6 +10,7 @@ import {
     setProgressTask, setTaskCount,
     setTaskGroup
 } from "../redux/state-slice/task-slice";
+import {setSearchTask} from "../redux/state-slice/search-slice";
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 const AxiosHeaders = {headers: {'authorization': getToken()}};
@@ -263,6 +264,27 @@ export const getTaskCountGroup = ()=>{
        if (res.status === 200){
            store.dispatch(setCountByGroup(res.data['data']));
        }
+
+    }).catch(error => {
+        store.dispatch(hideLoader);
+        if (error.response.status === 401){
+            removeSession();
+        }else {
+            errorToast('Server Error Occurred')
+        }
+    })
+}
+
+
+export const getSearchTask = (keyword)=>{
+    store.dispatch(showLoader);
+    const url = `${apiBaseUrl}/tasks/${keyword}`;
+
+    axios.get(url, AxiosHeaders).then(res => {
+        store.dispatch(hideLoader);
+        if (res.status === 200){
+            store.dispatch(setSearchTask(res.data['data']));
+        }
 
     }).catch(error => {
         store.dispatch(hideLoader);

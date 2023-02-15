@@ -45,9 +45,6 @@ const Progress = () => {
                     <h5>New Task</h5>
                 </div>
 
-
-
-
                 <div className="row ">
                     <div className='col-4'>
                         <Form.Group className="mb-3">
@@ -63,21 +60,7 @@ const Progress = () => {
                             </Form.Select>
                         </Form.Group>
                     </div>
-                    <div className='col-4'></div>
-
-                    <div className='col-4'>
-
-                        <InputGroup>
-                            <Form.Control
-                            />
-                            <InputGroup.Text className='bg-info text-white' >Search</InputGroup.Text>
-                        </InputGroup>
-
-                    </div>
-
                 </div>
-
-
             </div>
             <div className="row p-0 m-0">
                 {
