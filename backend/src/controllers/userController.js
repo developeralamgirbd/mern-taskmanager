@@ -103,6 +103,7 @@ exports.profileDetails=(req,res)=>{
 // resend Verify Email recover
 exports.RecoverVerifyEmail=async (req,res)=>{
     let email = req.params.email;
+    console.log(email);
     let OTPCode = Math.floor(100000 + Math.random() * 900000);
     try {
         // Email Account Query
