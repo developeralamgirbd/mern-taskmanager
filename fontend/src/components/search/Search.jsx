@@ -1,27 +1,29 @@
 import React, {useEffect} from 'react';
 import {Card, Container, Form, InputGroup} from "react-bootstrap";
 import {AiOutlineEdit, AiOutlineCalendar, AiOutlineDelete} from "react-icons/ai";
-import {getTaskGroupByStatus, getTasksByGroup, getTasksByStatus} from "../../APIRequest/taskApi";
+import {getSearchTask, getTaskGroupByStatus, getTasksByGroup, getTasksByStatus} from "../../APIRequest/taskApi";
 import {useSelector} from "react-redux";
 import {UpdateAlert} from "../../helpers/updateAlert";
 import {deleteAlert} from "../../helpers/deleteAlert";
+import {useSearchParams} from "react-router-dom";
 
-const Canceled = () => {
+const Search = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    const keyword = searchParams.get('q');
     useEffect(()=> {
-        getTasksByStatus('canceled');
-        getTaskGroupByStatus('canceled')
-    }, []);
+        getSearchTask(keyword)
+    }, [keyword]);
 
-    const newTaskList = useSelector((state) => state.task.canceled);
-    const taskGroup = useSelector((state) => state.task.taskGroup);
+
+    const searchTaskList = useSelector((state) => state.search.task);
 
     const updateHandle = (id, status)=>{
         UpdateAlert(id, status).then(result => {
             if (result){
-                getTasksByStatus('canceled');
-                getTaskGroupByStatus('canceled')
+                getTasksByStatus('progress');
+                getTaskGroupByStatus('progress')
             }
         });
     }
@@ -29,54 +31,31 @@ const Canceled = () => {
     const deleteAlertHandle = (id)=>{
         deleteAlert(id).then(result => {
             if (result){
-                getTasksByStatus('canceled');
+                getTasksByStatus('progress');
             }
         })
     }
 
-    const handleOnchange = (e)=>{
-        const value = e.target.value.toLowerCase();
-        getTasksByGroup(value, 'canceled')
-    }
 
     return (
         <Container fluid={true} className="content-body">
             <div className="row p-0 m-0">
                 <div className="col-12 col-md-6 col-lg-8 px-3">
-                    <h5>New Task</h5>
+                    <h5>Search for: {keyword}</h5>
                 </div>
-
-
-
-
-                <div className="row ">
-                    <div className='col-4'>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Select Group</Form.Label>
-                            <Form.Select onChange={handleOnchange}>
-                                <option selected disabled>select a group</option>
-                                {
-                                    taskGroup.map((group, i) => (
-                                        <option key={group._id.groupName} value={group._id.groupName}>{group._id.groupName}</option>
-                                    ))
-                                }
-
-                            </Form.Select>
-                        </Form.Group>
-                    </div>
-                </div>
-
 
             </div>
+
             <div className="row p-0 m-0">
                 {
-                    newTaskList.map((task, i) => (
+                    searchTaskList.length > 0 ?
+                    searchTaskList.map((task, i) => (
                         <div className="col-12 col-lg-4 col-sm-6 col-md-4  p-2" key={task._id}>
                             <Card className="card h-100">
                                 <div className="card-body">
                                     <div className='d-flex justify-content-between'>
                                         <p></p>
-                                        <p className="badge float-end bg-danger m-0 p-2">
+                                        <p className="badge float-end bg-primary m-0 p-2">
                                             {task.status}
                                         </p>
                                     </div>
@@ -105,11 +84,17 @@ const Canceled = () => {
                             </Card>
                         </div>
                     ))
+                    : (
+                        <div className='mt-5 d-flex justify-content-center align-items-center'>
+                            <h1>Task not found</h1>
+                        </div>
+                        )
                 }
+
 
             </div>
         </Container>
     );
 };
 
-export default Canceled;
+export default Search;

@@ -14,6 +14,7 @@ const cors =require('cors');
 
 // Database Lib Import
 const mongoose =require('mongoose');
+const {infoLogger, errorLogger} = require("./src/shared/logger");
 
 // Security Middleware Implement
 app.use(cors())
@@ -36,9 +37,9 @@ const OPTION={autoIndex:true}
 
 mongoose.connect(process.env.DATABASE, OPTION, (error)=>{
     if (error){
-        console.log(error)
+        errorLogger.error(error);
     }else {
-        console.log("DB Connection Success")
+        infoLogger.info(`DB is connected successfully`);
     }
 })
 

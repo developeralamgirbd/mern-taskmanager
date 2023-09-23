@@ -1,15 +1,15 @@
 import React, {Fragment, useEffect, useRef} from "react";
-import { Container, Navbar} from "react-bootstrap";
-import {NavLink, Outlet} from "react-router-dom";
+import {Container, Form, InputGroup, Navbar} from "react-bootstrap";
+import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {AiOutlineCheckCircle, AiOutlineEdit, AiOutlineLogout, AiOutlineMenuUnfold, AiOutlineUser} from "react-icons/ai";
 import {BsHourglass, BsListNested} from "react-icons/bs";
-import logo from "../../assets/images/logo.svg";
 import  { RiDashboardLine } from "react-icons/ri";
 import { MdOutlineCancelPresentation } from 'react-icons/md';
 import {getUserDetails, removeSession} from "../../helpers/sessionHelper";
 
-const MasterLayout = (props) => {
-    let contentRef,sideNavRef=useRef();
+const MasterLayout = () => {
+    let contentRef,sideNavRef,searchRef = useRef();
+    const navigate = useNavigate();
 
     const onLogout=()=>{
         removeSession();
@@ -31,6 +31,11 @@ const MasterLayout = (props) => {
         }
     };
 
+    const handleSearch = ()=>{
+        const keyword = searchRef.value;
+        navigate(`/search?q=${keyword}`)
+    }
+
 
     return (
         <Fragment>
@@ -38,7 +43,7 @@ const MasterLayout = (props) => {
                 <Container fluid={true}>
                     <Navbar.Brand >
                         <a className="icon-nav m-0 h5" onClick={MenuBarClickHandler}><AiOutlineMenuUnfold/></a>
-                        <img className="nav-logo mx-2"  src='' alt="logo"/>
+                        Manage Your Task
                     </Navbar.Brand>
 
                     <div className="float-right h-auto d-flex">
@@ -97,11 +102,18 @@ const MasterLayout = (props) => {
 
             </div>
 
-
-            {/*<SideMenuBar sideNavRef={sideNavRef} contentRef={contentRef}/>*/}
-
             <div ref={(div) => contentRef = div} className="content px-5">
-                {/*{props.children}*/}
+                <div className="row">
+                    <div className="col-4"></div>
+                    <div className="col-4"></div>
+                    <div className='col-4'>
+                        <InputGroup>
+                            <Form.Control ref={(input) => searchRef = input} />
+                            <InputGroup.Text className='bg-info text-white' role='button' onClick={handleSearch}>Search</InputGroup.Text>
+                        </InputGroup>
+
+                    </div>
+                </div>
                 <Outlet/>
             </div>
 

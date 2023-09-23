@@ -16,6 +16,7 @@ import {getToken} from "../helpers/sessionHelper";
 import SendOTPPage from "../pages/accountRecoverPage/SendOTPPage";
 import VerifyOtpPage from "../pages/accountRecoverPage/VerifyOTPPage";
 import CreatePasswordPage from "../pages/accountRecoverPage/CreatePasswordPage";
+import Search from "../components/search/Search";
 
 const Routers = () => {
 
@@ -31,6 +32,7 @@ const Routers = () => {
                             <Route exact path='/completed' element={<CompletedPage/>}/>
                             <Route exact path='/canceled' element={<CanceledPage/>}/>
                             <Route exact path='/profile' element={<ProfilePage/>}/>
+                            <Route exact path='/search' element={<Search/>}/>
 
                             <Route exact path='/login' element={<Navigate to='/' />} />
                             <Route exact path='/register' element={<Navigate to='/'/>} />

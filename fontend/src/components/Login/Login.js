@@ -28,7 +28,7 @@ const Login = () => {
     return (
         <div className="container">
             <div className="row  justify-content-center">
-                <div className="col-md-10 col-lg-10 center-screen">
+                <div className="col-md-4 col-lg-4 center-screen">
                     <div className="card animated fadeIn w-100 p-3">
                         <div className="card-body">
                             <h4>Login Up</h4>

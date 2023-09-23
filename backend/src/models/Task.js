@@ -8,7 +8,8 @@ const taskSchema= mongoose.Schema({
         type:String
     },
     groupName: {
-        type: String
+        type: String,
+        lowercase: true
     },
     status:{
         type: String,
